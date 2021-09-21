@@ -1,23 +1,26 @@
 import java.util.Arrays;
-import java.util.Scanner;
-
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    Resume res = new Resume();
 
     void clear() {
-        Arrays.fill(storage, null);
+        for(int i = 0; i < storage.length; i++) {
+            if(storage[i] != null) {
+                storage[i] = null;
+            }
+        }
     }
 
     void save(Resume r) {
-        Scanner scanner = new Scanner(System.in);
         int i = 0;
          do {
             storage[i] = r;
             i++;
          } while(storage[i] == null);
+        res.setSize(i);
     }
 
     Resume get(String uuid) {
@@ -33,9 +36,8 @@ public class ArrayStorage {
         for(int i = 0; i < storage.length; i++) {
             if (uuid.equals(storage[i].uuid)) {
                 storage[i] = null;
-                for(int j = i; j < storage.length - 1; j++) {
-                    storage[j] = storage[j + 1];
-                }
+                if (storage.length - 1 - i >= 0) 
+                    System.arraycopy(storage, i + 1, storage, i, storage.length - 1 - i);
             }
         }
     }
@@ -44,17 +46,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage, storage.length);
+        return Arrays.copyOfRange(storage, 0, res.getSize());
     }
 
     int size() {
-        int count = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if(storage[i] != null) {
-                i++;
-            }
-            count = i;
-        }
-        return count;
+        return res.getSize();
     }
 }
