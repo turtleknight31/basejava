@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.lang.String;
 /**
  * Array based storage for Resumes
  */
@@ -12,10 +13,12 @@ public class ArrayStorage {
 
     void save(Resume r) {
         int i = 0;
-         do {
-            storage[i] = r;
-            i++;
-         } while(storage[i] == null);
+        if(r.uuid != null) {
+            do {
+                storage[i] = r;
+                i++;
+            } while (storage[size] == null);
+        }
         size = i;
     }
 
@@ -38,7 +41,7 @@ public class ArrayStorage {
                     System.arraycopy(storage, i + 1, storage, i, storage.length - 1 - i);
             } else {
                 System.out.println("Резюме не было найдено!");
-            }
+           }
         }
     }
 
