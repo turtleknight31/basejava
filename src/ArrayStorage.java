@@ -4,7 +4,7 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    int size = 0;
+    private int size = 0;
 
     void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -12,9 +12,18 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if(r.uuid != null) {
+        boolean existResume = true;
+        for (int i = 0; i < size; i++) {
+            if(r.uuid.equals(storage[i].uuid)) {
+                System.out.println("Данное резюме уже существует в базе!");
+                existResume = false;
+            }
+        }
+        if(existResume && r.uuid != null && size < 10000) {
             storage[size] = r;
             size++;
+        } else if(size > 9999) {
+            System.out.println("Резюме переполнилась, добавить новое резюме не получится!");
         }
     }
 
@@ -30,12 +39,9 @@ public class ArrayStorage {
     void delete(String uuid) {
         for(int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].uuid)) {
+                storage[i] = storage[size - 1];
                 storage[i] = null;
-                if (size - 1 - i >= 0)
-                    System.arraycopy(storage, i + 1, storage, i, size - 1 - i);
-                    size--;
-            } else {
-                System.out.println("Резюме не было найдено!");
+                size--;
            }
         }
     }
@@ -49,5 +55,13 @@ public class ArrayStorage {
 
     int size() {
         return size;
+    }
+
+    void update(Resume resume)  {
+        for(int i = 0; i < size; i++) {
+            if (resume.uuid.equals(storage[i].uuid)) {
+                storage[i] = resume;
+            }
+        }
     }
 }

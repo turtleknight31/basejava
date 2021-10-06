@@ -27,6 +27,13 @@ public class MainTestArrayStorage {
         ARRAY_STORAGE.clear();
         printAll();
 
+        ARRAY_STORAGE.update(r1);
+        printAll();
+        ARRAY_STORAGE.update(r2);
+        printAll();
+        ARRAY_STORAGE.update(r3);
+        printAll();
+
         System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
