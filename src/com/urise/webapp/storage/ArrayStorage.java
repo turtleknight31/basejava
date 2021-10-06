@@ -59,8 +59,11 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        storage[index] = resume;
+        if(getIndex(resume.getUuid()) == -1) {
+            System.out.println("Резюме не существует");
+        } else {
+            storage[getIndex(resume.getUuid())] = resume;
+        }
     }
 
     private int getIndex(String uuid) {
