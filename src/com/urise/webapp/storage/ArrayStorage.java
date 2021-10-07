@@ -3,11 +3,12 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     public void clear() {
@@ -16,20 +17,20 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if(index != -1) {
-            System.out.println("Данное резюме уже существует в базе!");
+        int index = findIndex(r.getUuid());
+        if (index != -1) {
+            System.out.println("Данное резюме" + r.getUuid() + " уже существует в базе!");
         } else if (size == storage.length) {
             System.out.println("Резюме переполнилась, добавить новое резюме не получится!");
-        }else {
+        } else {
             storage[size] = r;
             size++;
         }
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if(index == -1) {
+        int index = findIndex(uuid);
+        if (index == -1) {
             System.out.println("Резюме " + uuid + " не существует");
             return null;
         }
@@ -37,9 +38,9 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if(index == -1) {
-            System.out.println("Такого резюме не существует");
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.println("Резюме " + uuid + " не существует");
         } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
@@ -59,14 +60,15 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if(getIndex(resume.getUuid()) == -1) {
-            System.out.println("Резюме не существует");
+        int index = findIndex(resume.getUuid());
+        if (index == -1) {
+            System.out.println("Резюме " + resume.getUuid() + " не существует");
         } else {
-            storage[getIndex(resume.getUuid())] = resume;
+            storage[index] = resume;
         }
     }
 
-    private int getIndex(String uuid) {
+    private int findIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
