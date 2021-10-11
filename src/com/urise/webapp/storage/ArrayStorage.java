@@ -9,18 +9,6 @@ import java.util.Arrays;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume r) {
-        int index = findIndex(r.getUuid());
-        if (index != -1) {
-            System.out.println("Данное резюме" + r.getUuid() + " уже существует в базе!");
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Резюме переполнилась, добавить новое резюме не получится!");
-        } else {
-            storage[size] = r;
-            size++;
-        }
-    }
-
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index == -1) {
