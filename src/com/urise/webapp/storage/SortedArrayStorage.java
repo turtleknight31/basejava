@@ -13,7 +13,8 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         return Arrays.binarySearch(storage, 0, size, searchUuid);
     }
 
-    protected int insertionNumber(Resume resume) {
-        return -findIndex(resume.getUuid()) - 1;
+    protected void insertionNumber(Resume resume, int index) {
+        System.arraycopy(resume, index, resume, index + 1, size - index);
+        storage[index] = resume;
     }
 }
