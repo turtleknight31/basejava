@@ -20,7 +20,9 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     protected void deleteNumber(int index) {
-        int indexId = index + 1;
-        System.arraycopy(storage, indexId, storage, indexId - 1, size - indexId);
+        if(size - index - 1 > 0) {
+            int indexId = index + 1;
+            System.arraycopy(storage, indexId, storage, indexId - 1, size - indexId);
+        }
     }
 }
