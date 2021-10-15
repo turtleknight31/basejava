@@ -14,11 +14,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     protected void insertionNumber(Resume resume, int index) {
-        System.arraycopy(resume, -index - 1, resume, -index, size + index - 1);
+        int indexId = -index - 1;
+        System.arraycopy(storage, indexId, storage, indexId + 1, size - indexId);
         storage[-index - 1] = resume;
     }
 
     protected void deleteNumber(int index) {
-        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+        int indexId = index + 1;
+        System.arraycopy(storage, indexId, storage, indexId - 1, size - indexId);
     }
 }
