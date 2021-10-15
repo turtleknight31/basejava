@@ -26,6 +26,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Резюме переполнилась, добавить новое резюме не получится!");
         } else {
             insertionNumber(r, index);
+            size++;
         }
     }
 
