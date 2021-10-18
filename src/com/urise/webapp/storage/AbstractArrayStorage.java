@@ -1,5 +1,8 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -21,9 +24,9 @@ public abstract class AbstractArrayStorage implements Storage {
     public void save(Resume r) {
         int index = findIndex(r.getUuid());
         if (index > 0) {
-            System.out.println("Данное резюме" + r.getUuid() + " уже существует в базе!");
+            throw new ExistStorageException(r.getUuid());
         } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Резюме переполнилась, добавить новое резюме не получится!");
+            throw new StorageException("Storage overflow", r.getUuid());
         } else {
             saveToArray(r, index);
             size++;
@@ -41,8 +44,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public Resume get(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " не существует");
-            return null;
+            throw new NotExistException(uuid);
         }
         return storage[index];
     }
@@ -50,7 +52,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void delete(String uuid) {
         int index = findIndex(uuid);
         if (index < 0) {
-            System.out.println("Резюме " + uuid + " не существует");
+            throw new NotExistException(uuid);
         } else {
             deleteFromArray(index);
             storage[size - 1] = null;
@@ -62,7 +64,7 @@ public abstract class AbstractArrayStorage implements Storage {
     public void update(Resume resume) {
         int index = findIndex(resume.getUuid());
         if (index < 0) {
-            System.out.println("Резюме " + resume.getUuid() + " не существует");
+            throw new NotExistException(resume.getUuid());
         } else {
             storage[index] = resume;
         }
