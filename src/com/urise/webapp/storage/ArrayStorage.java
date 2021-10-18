@@ -14,11 +14,11 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    protected void findInsertionIndex(Resume resume, int index) {
+    protected void saveToArray(Resume resume, int index) {
         storage[index] = resume;
     }
 
-    protected void findDeleteIndex(int index) {
+    protected void deleteFromArray(int index) {
         storage[index] = storage[size - 1];
     }
 }
