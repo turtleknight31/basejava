@@ -14,10 +14,12 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
+    @Override
     protected void saveToArray(Resume resume, int index) {
         storage[index] = resume;
     }
 
+    @Override
     protected void deleteFromArray(int index) {
         storage[index] = storage[size - 1];
     }
