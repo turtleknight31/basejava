@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -7,8 +8,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class AbstractArrayStorageTest {
-    private Storage storage = new ArrayStorage();
+public abstract class AbstractArrayStorageTest {
+    private final Storage storage = new ArrayStorage();
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -36,6 +37,7 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
+
     }
 
     @Test
@@ -49,5 +51,10 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void update() {
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
+        storage.get("dummy");
     }
 }
