@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Before;
@@ -8,7 +9,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 
 public abstract class AbstractArrayStorageTest {
@@ -61,10 +62,25 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
+        Resume newResume = new Resume(UUID_1);
+        storage.update(newResume);
+        assertSame(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() throws Exception {
         storage.get("dummy");
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveOverFlow() throws Exception {
+        try {
+            for(int i =4; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail();
+        }
+        storage.save(new Resume());
     }
 }
