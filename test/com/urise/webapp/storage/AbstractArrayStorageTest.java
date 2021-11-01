@@ -13,10 +13,14 @@ import static org.junit.Assert.*;
 
 
 public abstract class AbstractArrayStorageTest {
-    private final Storage storage = new ArrayStorage();
+    private Storage storage = new ArrayStorage();
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+
+    public AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -45,7 +49,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
-        String [] expected = new String[] {UUID_1, UUID_2, UUID_3};
+        String[] expected = new String[]{UUID_1, UUID_2, UUID_3};
         Assert.assertEquals(Arrays.toString(expected), Arrays.toString(storage.getAll()));
     }
 
@@ -75,7 +79,7 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void saveOverFlow() throws Exception {
         try {
-            for(int i =4; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
