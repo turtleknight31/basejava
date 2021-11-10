@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
@@ -46,6 +47,23 @@ public abstract class AbstractArrayStorageTest {
         Assert.assertEquals(4, storage.size());
     }
 
+    @Test(expected = ExistStorageException.class)
+    public void getResumeExist() throws Exception {
+        storage.save(r1);
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveOverFlow() throws Exception {
+        try {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
+                storage.save(new Resume());
+            }
+        } catch (StorageException e) {
+            Assert.fail("Переполнение произошло раньше времени");
+        }
+        storage.save(new Resume());
+    }
+
     @Test
     public void size() {
         Assert.assertEquals(3, storage.size());
@@ -63,6 +81,11 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
+    public void getNotExist() throws Exception {
+        storage.get("dummy");
+    }
+
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
         Assert.assertEquals(3, storage.size());
         storage.delete(UUID_1);
@@ -75,22 +98,5 @@ public abstract class AbstractArrayStorageTest {
         Resume newResume = new Resume(UUID_1);
         storage.update(newResume);
         assertSame(newResume, storage.get(UUID_1));
-    }
-
-    @Test(expected = NotExistStorageException.class)
-    public void getNotExist() throws Exception {
-        storage.get("dummy");
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverFlow() throws Exception {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            Assert.fail("Переполнилась раньше времени");
-        }
-        storage.save(new Resume());
     }
 }
