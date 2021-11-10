@@ -100,7 +100,7 @@ public abstract class AbstractArrayStorageTest {
         assertSame(newResume, storage.get(UUID_1));
     }
 
-    @Test //(expected = NotExistStorageException.class)
+    @Test(expected = NotExistStorageException.class)
     public void updateNotExist() throws Exception {
         storage.get("uuid5");
     }
